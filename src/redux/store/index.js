@@ -1,9 +1,13 @@
 import { createStore, applyMiddleware } from "redux";
 import logger from "redux-logger";
 
+//importing a utility function to add/update quantity of item
+import { addItemToCart } from "../utils";
+
 const initialState = {
   currentUser: null,
   cartHidden: true,
+  cartItems: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -12,6 +16,12 @@ const reducer = (state = initialState, action) => {
   }
   if (action.type === "TOGGLE_CART_HIDDEN") {
     return { ...state, cartHidden: !state.cartHidden };
+  }
+  if (action.type === "ADD_ITEM") {
+    return {
+      ...state,
+      cartItems: addItemToCart(state.cartItems, action.payload),
+    };
   }
   return state;
 };
