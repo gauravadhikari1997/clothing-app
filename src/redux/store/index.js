@@ -6,8 +6,10 @@ import { addItemToCart } from "../utils";
 
 const initialState = {
   currentUser: null,
-  cartHidden: true,
-  cartItems: [],
+  cart: {
+    cartHidden: true,
+    cartItems: [],
+  },
 };
 
 const reducer = (state = initialState, action) => {
@@ -15,12 +17,18 @@ const reducer = (state = initialState, action) => {
     return { ...state, currentUser: action.payload };
   }
   if (action.type === "TOGGLE_CART_HIDDEN") {
-    return { ...state, cartHidden: !state.cartHidden };
+    return {
+      ...state,
+      cart: { ...state.cart, cartHidden: !state.cart.cartHidden },
+    };
   }
   if (action.type === "ADD_ITEM") {
     return {
       ...state,
-      cartItems: addItemToCart(state.cartItems, action.payload),
+      cart: {
+        ...state.cart,
+        cartItems: addItemToCart(state.cart.cartItems, action.payload),
+      },
     };
   }
   return state;
