@@ -13,6 +13,7 @@ import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
 import Checkout from "./pages/checkout/checkout.component";
+import Collection from "./pages/collection/collection.component";
 
 class App extends React.Component {
   unsubscribeFromAuth = null;
@@ -61,6 +62,7 @@ class App extends React.Component {
             }
           ></Route>
           <Route path="/checkout" component={Checkout}></Route>
+          <Route path="/shop/:title" component={Collection}></Route>
         </Switch>
       </>
     );

@@ -1,7 +1,9 @@
 import { createStore, applyMiddleware } from "redux";
 import logger from "redux-logger";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
-//importing a utility function to add/update quantity of item
+//importing a utility functions
 import { addItemToCart } from "../utils";
 import { increaseItemFromCart } from "../utils";
 import { decreseItemFromCart } from "../utils";
@@ -65,8 +67,16 @@ const reducer = (state = initialState, action) => {
   return state;
 };
 
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["cart"],
+};
+const pReducer = persistReducer(persistConfig, reducer);
+
 const middlewares = [logger];
 
-const store = createStore(reducer, applyMiddleware(...middlewares));
+const store = createStore(pReducer, applyMiddleware(...middlewares));
+const persistor = persistStore(store);
 
-export default store;
+export { persistor, store };
