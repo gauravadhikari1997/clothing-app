@@ -1,9 +1,9 @@
 export const addItemToCart = (cartItems, cartItemToAdd) => {
-  const cartItemToAddExists = cartItems.find(
+  const cartItemExists = cartItems.find(
     (cartItem) => cartItem.id === cartItemToAdd.id
   );
 
-  if (cartItemToAddExists) {
+  if (cartItemExists) {
     return cartItems.map((cartItem) =>
       cartItem.id === cartItemToAdd.id
         ? { ...cartItem, quantity: cartItem.quantity + 1 }
@@ -12,4 +12,30 @@ export const addItemToCart = (cartItems, cartItemToAdd) => {
   }
 
   return [...cartItems, { ...cartItemToAdd, quantity: 1 }];
+};
+
+export const decreseItemFromCart = (cartItems, cartItemToDecrease) => {
+  const cartItemExists = cartItems.find(
+    (item) => item.id === cartItemToDecrease.id
+  );
+
+  if (cartItemExists.quantity === 1) {
+    return cartItems.filter(
+      (cartItem) => cartItem.id !== cartItemToDecrease.id
+    );
+  }
+
+  return cartItems.map((cartItem) =>
+    cartItem.id === cartItemToDecrease.id
+      ? { ...cartItem, quantity: cartItem.quantity - 1 }
+      : { ...cartItem }
+  );
+};
+
+export const increaseItemFromCart = (cartItems, cartItemToIncrease) => {
+  return cartItems.map((cartItem) =>
+    cartItem.id === cartItemToIncrease.id
+      ? { ...cartItem, quantity: cartItem.quantity + 1 }
+      : { ...cartItem }
+  );
 };
