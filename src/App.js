@@ -1,10 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
-
-import { selectCurrentUser } from "./redux/selectors/user.selectors";
+import { useDispatch, useSelector } from "react-redux";
 
 import "./App.css";
 
@@ -15,63 +12,58 @@ import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up
 import Checkout from "./pages/checkout/checkout.component";
 import Collection from "./pages/collection/collection.component";
 
-class App extends React.Component {
-  unsubscribeFromAuth = null;
+function App() {
+  const currentUser = useSelector((state) => state.currentUser);
+  const dispatch = useDispatch();
 
-  componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
-      if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
+  useEffect(() => {
+    function setAuth() {
+      const unsubscribe = auth.onAuthStateChanged(async (userAuth) => {
+        if (userAuth) {
+          const userRef = await createUserProfileDocument(userAuth);
 
-        userRef.onSnapshot((snapShot) => {
-          this.props.dispatch({
-            type: "SET_CURRENT_USER",
-            payload: {
-              id: snapShot.id,
-              ...snapShot.data(),
-            },
+          userRef.onSnapshot((snapShot) => {
+            dispatch({
+              type: "SET_CURRENT_USER",
+              payload: {
+                id: snapShot.id,
+                ...snapShot.data(),
+              },
+            });
           });
-        });
-      } else {
-        //set current user state to null
-        this.props.dispatch({ type: "SET_CURRENT_USER", payload: userAuth });
-      }
-    });
-  }
+        } else {
+          //set current user state to null
+          dispatch({ type: "SET_CURRENT_USER", payload: userAuth });
+        }
+      });
+      return () => unsubscribe();
+    }
+    setAuth();
+  }, []);
 
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
-
-  render() {
-    return (
-      <>
-        <Header />
-        <Switch>
-          <Route exact path="/" component={HomePage}></Route>
-          <Route exact path="/shop" component={ShopPage}></Route>
-          <Route
-            exact
-            path="/signin"
-            render={() =>
-              this.props.currentUser ? (
-                <Redirect to="/" />
-              ) : (
-                <SignInAndSignUpPage />
-              )
-            }
-          ></Route>
-          <Route path="/checkout" component={Checkout}></Route>
-          <Route path="/shop/:title" component={Collection}></Route>
-        </Switch>
-      </>
-    );
-  }
+  return (
+    <>
+      <Header />
+      <Switch>
+        <Route exact path="/" component={HomePage}></Route>
+        <Route exact path="/shop" component={ShopPage}></Route>
+        <Route
+          exact
+          path="/signin"
+          render={() =>
+            currentUser ? <Redirect to="/" /> : <SignInAndSignUpPage />
+          }
+        ></Route>
+        <Route path="/checkout" component={Checkout}></Route>
+        <Route path="/shop/:title" component={Collection}></Route>
+      </Switch>
+    </>
+  );
 }
 
-const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser,
-});
+// const mapStateToProps = createStructuredSelector({
+//   currentUser: selectCurrentUser,
+// });
 
 // OLD3
 // const mapStateToProps = (state) = ({
@@ -86,6 +78,6 @@ const mapStateToProps = createStructuredSelector({
 //   currentUser
 // })
 
-const mapDispatchToProps = (dispatch) => ({ dispatch });
+// const mapDispatchToProps = (dispatch) => ({ dispatch });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
