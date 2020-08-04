@@ -3,6 +3,8 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import { useDispatch, useSelector } from "react-redux";
 
+import { selectCurrentUser } from "./redux/selectors/user.selectors";
+
 import "./App.css";
 
 import HomePage from "./pages/homepage/homepage.component";
@@ -13,7 +15,7 @@ import Checkout from "./pages/checkout/checkout.component";
 import Collection from "./pages/collection/collection.component";
 
 function App() {
-  const currentUser = useSelector((state) => state.currentUser);
+  const currentUser = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -1,13 +1,14 @@
 import React from "react";
-
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import CustomButton from "../custom-button/custom-button.component";
 
 import "./collection-item.styles.scss";
 
-const CollectionItem = ({ item, dispatch }) => {
+const CollectionItem = ({ item }) => {
+  const dispatch = useDispatch();
   const { name, price, imageUrl } = item;
+
   return (
     <div className="collection-item">
       <div
@@ -30,6 +31,4 @@ const CollectionItem = ({ item, dispatch }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({ dispatch });
-
-export default connect(null, mapDispatchToProps)(CollectionItem);
+export default CollectionItem;

@@ -1,10 +1,12 @@
 import React from "react";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import "./checkout-item.styles.scss";
 
-const CheckoutItem = ({ dispatch, cartItem }) => {
+const CheckoutItem = ({ cartItem }) => {
+  const dispatch = useDispatch();
   const { name, imageUrl, price, quantity } = cartItem;
+
   return (
     <div className="checkout-item">
       <div className="image-container">
@@ -43,6 +45,4 @@ const CheckoutItem = ({ dispatch, cartItem }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({ dispatch });
-
-export default connect(null, mapDispatchToProps)(CheckoutItem);
+export default CheckoutItem;

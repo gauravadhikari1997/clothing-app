@@ -2,13 +2,15 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
+import { selectCartItems } from "../../redux/selectors/cart.selectors";
+
 import CustomButton from "../custom-button/custom-button.component";
 import CartItem from "../cart-item/cart-item.component";
 
 import "./cart-dropdown.styles.scss";
 
 function CartDropdown({ history }) {
-  const cartItems = useSelector((state) => state.cart.cartItems);
+  const cartItems = useSelector(selectCartItems);
   const dispatch = useDispatch();
 
   return (
