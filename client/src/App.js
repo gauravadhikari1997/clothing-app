@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { selectCurrentUser } from "./redux/selectors/user.selectors";
 
-import "./App.css";
+import { GlobalStyle } from "./global.styles";
 
 import HomePage from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shop/shop.component";
@@ -45,6 +45,7 @@ function App() {
 
   return (
     <>
+      <GlobalStyle />
       <Header />
       <Switch>
         <Route exact path="/" component={HomePage}></Route>
