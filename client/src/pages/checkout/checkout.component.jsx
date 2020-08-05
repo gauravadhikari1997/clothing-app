@@ -43,7 +43,9 @@ function CheckoutPage() {
         <br />
         4242 4242 4242 4242 - Exp: 01/22 - CVV: 123
       </div>
-      <StripeCheckoutButton price={total} />
+      <center>
+        <StripeCheckoutButton price={total} />
+      </center>
     </div>
   );
 }

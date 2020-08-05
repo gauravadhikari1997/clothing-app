@@ -6,6 +6,10 @@
   align-items: center;
   margin: 50px auto 0;
 
+  @media screen and (max-width: 800px) {
+    width: 85%;
+  }
+
   .checkout-header {
     width: 100%;
     padding: 10px 0;
@@ -35,9 +39,14 @@
   }
 
   .test-warning {
+    border: solid 1px;
     text-align: center;
     margin-top: 40px;
     font-size: 24px;
     color: red;
+
+    @media screen and (max-width: 800px) {
+      font-size: 20px;
+    }
   }
 }
